@@ -1,21 +1,17 @@
+import { TwitterFollowCard } from './TwitterFollowCard'
 import './joder.css'
 export function App () {
+  const formstatUserName=(userName)=>`@${userName}`
+
   return (
-    <article className='tw-follow-card'>
-    <header className='tw-follow-card-header'>
-    <img className='tw-follow-card-avatar'  src="https://unavatar.io/twitter/kikobeats" alt="Avatar" />
-    <div className='tw-follow-card-info'>
-      <strong>El mejor dev</strong>
-      <span className='tw-follow-card-userName'>@DavidApraez</span>
+    <div className='App'>
+    <TwitterFollowCard 
+    formstatUserName={formstatUserName} 
+    isFollowing userName="casey" 
+    name={"David Apraez"}/>
+    <TwitterFollowCard formstatUserName={formstatUserName} isFollowing={false} userName="willsmith" name={"David Apraez"}/>
+    <TwitterFollowCard formstatUserName={formstatUserName} isFollowing userName="karolg" name={"David Apraez"}/>
     </div>
-    </header>
-
-    <aside>
-      <button className='tw-followCard-button'>
-        seguir
-      </button>
-    </aside>
-
-    </article>
+    
   )
 }
