@@ -9,8 +9,8 @@ export function App () {
     formstatUserName={formstatUserName} 
     isFollowing userName="casey" 
     name={"David Apraez"}/>
-    <TwitterFollowCard formstatUserName={formstatUserName} isFollowing={false} userName="willsmith" name={"David Apraez"}/>
-    <TwitterFollowCard formstatUserName={formstatUserName} isFollowing userName="karolg" name={"David Apraez"}/>
+    <TwitterFollowCard formstatUserName={formstatUserName} isFollowing={false} userName="mrbeast" name={"Rosa Ramirez"}/>
+    <TwitterFollowCard formstatUserName={formstatUserName} isFollowing userName="karolg" name={"Emerson Toro"}/>
     </div>
     
   )

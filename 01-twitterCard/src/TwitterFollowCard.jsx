@@ -9,7 +9,7 @@ export function TwitterFollowCard({userName,name,isFollowing,formstatUserName}){
       <span className='tw-follow-card-userName'>{formstatUserName(userName)}</span>
     </div>
     </header>
-
+        //1:28:02
     <aside>
       <button className='tw-followCard-button'>
         seguir
