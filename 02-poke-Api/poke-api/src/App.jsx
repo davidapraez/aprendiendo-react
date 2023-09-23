@@ -1,43 +1,79 @@
-import {Button} from "./components/Button"
-import { useState,useEffect } from "react";
-import './sass/App.scss'
-import { TiArrowLeftOutline,TiArrowRightOutline } from "react-icons/ti";
+//Hooks
+import { useState, useEffect } from "react";
+//Icons
+import { TiArrowLeftOutline, TiArrowRightOutline } from "react-icons/ti";
+//Styles
+import "./sass/App.scss";
+//Components
+import { Card } from "./components/Card";
+import { Button } from "./components/Button";
 
-const App=()=>{
+const App = () => {
+  let [pokemonId, setpokemonId] = useState(60);
+  let [pokemonEvolutions, setPokemonEvolutions] = useState([]);
 
-    let [pokemonNumber,setPokemonNumber]=useState(10)
-    let[pokemonName, setPokemonName]=useState('')
-
-    const increment=()=>{
-        setPokemonNumber(pokemonNumber+1)
-        console.log("Vlaor antes del nuevo render "+ pokemonNumber)
+  const increment = () => {
+    setpokemonId(pokemonId + 1);
+  };
+  const decrement = () => {
+    if (pokemonId === 1) {
+      setpokemonId(1);
+    } else {
+      setpokemonId(pokemonId - 1);
     }
-    useEffect(()=>{
-        console.log("Valor actual "+pokemonNumber);
-        //Aqui debemos llamar a las Api siempre 
-          searchPokemon(pokemonNumber)
-    },[pokemonNumber])
+  };
+  useEffect(() => {
+    //Aqui debemos llamar a las Api siempre
+    searchPokemon(pokemonId);
+  }, [pokemonId]);
 
-    const searchPokemon=async pokemonNumber=>{
-        const response= await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonNumber}/`)
-        const data=await response.json()
-        setPokemonName(data.name)
+  const searchPokemon = async (pokemonId) => {
+    const response = await fetch(
+      `https://pokeapi.co/api/v2/evolution-chain/${pokemonId}/`
+    );
+    const data = await response.json();
+    let pokemonEvolucionsArray = [];
+    let pokemonLv1 = data.chain.species.name;
+    let pokemonLv1Img = await getPokemonImg(pokemonLv1);
+    pokemonEvolucionsArray.push([pokemonLv1, pokemonLv1Img]);
+
+    if (data.chain.evolves_to.length !== 0) {
+      let pokemonLv2 = data.chain.evolves_to[0].species.name;
+      let pokemonLv2Img = await getPokemonImg(pokemonLv2);
+      pokemonEvolucionsArray.push([pokemonLv2, pokemonLv2Img]);
+      if (data.chain.evolves_to[0].evolves_to.length !== 0) {
+        let pokemonLv3 = data.chain.evolves_to[0].evolves_to[0].species.name;
+        let pokemonLv3Img = await getPokemonImg(pokemonLv3);
+        pokemonEvolucionsArray.push([pokemonLv3, pokemonLv3Img]);
+      }
     }
+    setPokemonEvolutions(pokemonEvolucionsArray);
+    // setPokemonName(pokemonLv1);
+  };
+  const getPokemonImg = async (name) => {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}/`);
+    const data = await response.json();
+    return data.sprites.other["official-artwork"].front_default;
+  };
 
-    return (
-        <>
-        <div>
-        <h1>Hola</h1>
-        <button onClick={increment}>Aumentar</button>
-        <div>{pokemonName}</div>
+  //1:21:31 aqui voy https://www.youtube.com/watch?v=jg5ydNHNVJ4&t=87s&ab_channel=CodingTube
+
+  return (
+    <>
+      <div className="app">
         {/* Tarjetas*/}
+        <div className={`card-container card${pokemonEvolutions.length}`}>
+          {pokemonEvolutions.map((pokemon) => (
+            <Card key={pokemon[0]} name={pokemon[0]} img={pokemon[1]} />
+          ))}
+        </div>
         <div className="buttons-container">
-            <Button icon={<TiArrowLeftOutline/>} handleClick={()=>console.log('anterior')} />
-            <Button icon={<TiArrowRightOutline/>} handleClick={()=>console.log('siguiente')}/>
+          <Button icon={<TiArrowLeftOutline />} handleClick={decrement} />
+          <Button icon={<TiArrowRightOutline />} handleClick={increment} />
         </div>
-        </div>
-        </>
-       )
-}
+      </div>
+    </>
+  );
+};
 
-export {App};
+export { App };
