@@ -9,7 +9,7 @@ import { Card } from "./components/Card";
 import { Button } from "./components/Button";
 
 const App = () => {
-  let [pokemonId, setpokemonId] = useState(60);
+  let [pokemonId, setpokemonId] = useState(1);
   let [pokemonEvolutions, setPokemonEvolutions] = useState([]);
 
   const increment = () => {
